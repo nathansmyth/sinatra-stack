@@ -44,9 +44,10 @@ $(function(){
   // The DOM element for a make item...
   window.MakeView = Backbone.View.extend({
     tagName: "li",
-    template: _.template($('#item-template').html()),
+    template: _.template($('#item-template-make').html()),
     // The DOM events specific to an item.
     events: {
+      "click .check"              : "toggleDone",
       "dblclick div.make-text"    : "edit",
       "click span.make-destroy"   : "clear",
       "keypress .make-input"      : "updateOnEnter"
@@ -72,6 +73,11 @@ $(function(){
       this.$('.make-text').text(text);
       this.input = this.$('.make-input');
       this.input.bind('blur', _.bind(this.close, this)).val(text);
+    },
+
+    // Toggle the `"done"` state of the model.
+    toggleDone: function() {
+      this.model.toggle();
     },
 
     // Switch this view into `"editing"` mode, displaying the input field.
@@ -114,61 +120,76 @@ $(function(){
     el: $("#automotive"),
 
     // Our template for the line of statistics at the bottom of the app.
-    statsTemplate: _.template($('#stats-template').html()),
+    // statsTemplate: _.template($('#stats-template').html()),
 
     // Delegated events for creating new items, and clearing completed ones.
     events: {
       "keypress #new-make":  "createOnEnter",
+      "keyup #new-make":     "showTooltip",
       "click .make-clear a": "clearCompleted"
     },
 
-    // At initialization we bind to the relevant events on the `Makes`
+    // At initialization we bind to the relevant events on the `Todos`
     // collection, when items are added or changed. Kick things off by
     // loading any preexisting makes that might be saved in *localStorage*.
     initialize: function() {
       this.input    = this.$("#new-make");
 
-      Makes.bind('add',   this.addOne, this);
-      Makes.bind('reset', this.addAll, this);
-      Makes.bind('all',   this.render, this);
+      Todos.bind('add',   this.addOne, this);
+      Todos.bind('reset', this.addAll, this);
+      Todos.bind('all',   this.render, this);
 
-      Makes.fetch();
+      Todos.fetch();
     },
 
     // Re-rendering the App just means refreshing the statistics -- the rest
     // of the app doesn't change.
     render: function() {
       this.$('#make-stats').html(this.statsTemplate({
-        total:      Makes.length
+        total:      Todos.length,
+        done:       Todos.done().length,
+        remaining:  Todos.remaining().length
       }));
     },
 
     // Add a single make item to the list by creating a view for it, and
     // appending its element to the `<ul>`.
     addOne: function(make) {
-      var view = new MakeView({model: make});
+      var view = new TodoView({model: make});
       this.$("#make-list").append(view.render().el);
     },
 
-    // Add all items in the **Makes** collection at once.
+    // Add all items in the **Todos** collection at once.
     addAll: function() {
-      Makes.each(this.addOne);
+      Todos.each(this.addOne);
     },
 
     // If you hit return in the main input field, and there is text to save,
-    // create new **Make** model persisting it to *localStorage*.
+    // create new **Todo** model persisting it to *localStorage*.
     createOnEnter: function(e) {
       var text = this.input.val();
       if (!text || e.keyCode != 13) return;
-      Makes.create({MakeName: text});
+      Todos.create({text: text});
       this.input.val('');
     },
 
     // Clear all done make items, destroying their models.
     clearCompleted: function() {
-      _.each(Makes.done(), function(make){ make.destroy(); });
+      _.each(Todos.done(), function(make){ make.destroy(); });
       return false;
     },
+
+    // Lazily show the tooltip that tells you to press `enter` to save
+    // a new make item, after one second.
+    showTooltip: function(e) {
+      var tooltip = this.$(".ui-tooltip-top");
+      var val = this.input.val();
+      tooltip.fadeOut();
+      if (this.tooltipTimeout) clearTimeout(this.tooltipTimeout);
+      if (val == '' || val == this.input.attr('placeholder')) return;
+      var show = function(){ tooltip.show().fadeIn(); };
+      this.tooltipTimeout = _.delay(show, 1000);
+    }
 
   });
 

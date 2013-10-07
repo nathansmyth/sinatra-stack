@@ -1,0 +1,12 @@
+/ Make App Interface
+
+%div#automotive
+  %div.title
+    %h1
+      = @make_name
+      %div.content
+        %div#makes
+          %ul#make-list
+          - @listing.to_a[0].to_a[0].to_a[1].each do |item|
+            %li= item.to_a[0].to_a[1]
+        %div#make-stats

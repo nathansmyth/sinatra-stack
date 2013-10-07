@@ -3,7 +3,8 @@ require 'sinatra'
 require 'mongo'
 require 'json'
 
-DB = Mongo::Connection.new.db("automotive", :pool_size => 5, :timeout => 5)
+DB = Mongo::Connection.new.db("test", :pool_size => 5, :timeout => 5)
+AUTOS = DB["automotive"]
 
 get '/' do
   haml :index, :attr_wrapper => '"', :locals => {:title => 'haii'}
@@ -11,6 +12,12 @@ end
 
 get '/automotive' do
   haml :automotive, :attr_wrapper => '"', :locals => {:title => 'MongoDB Backed AUTOMOTIVE App'}
+end
+
+get '/automotive/:make' do
+  @make_name = params[:make]
+  @listing = AUTOS.find({"MakeName" => @make_name}, {:fields => {"_id" => 0, "Models.ModelName" => 1}}).next
+  haml :make_listing, :attr_wrapper => '"', :locals => {:title => " mongo page"}
 end
 
 get '/api/:thing' do
