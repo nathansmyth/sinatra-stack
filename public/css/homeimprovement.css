@@ -111,7 +111,7 @@ html {
     color: #333333;
   }
 
-#automotive {
+#homeimprovement {
   width: 480px;
   margin: 0 auto 40px;
   background: white;
@@ -121,7 +121,7 @@ html {
   -o-box-shadow: rgba(0, 0, 0, 0.2) 0 5px 6px 0;
   box-shadow: rgba(0, 0, 0, 0.2) 0 5px 6px 0;
 }
-  #automotive h1 {
+  #homeimprovement h1 {
     font-size: 36px;
     font-weight: bold;
     text-align: center;
@@ -167,6 +167,7 @@ html {
     position: relative;
     font-size: 24px;
     line-height: 1.1em;
+    list-style-type: none;
     border-bottom: 1px solid #cccccc;
   }
     #category-list li:after {
@@ -422,7 +423,7 @@ html {
 }
 
 @media only screen and (max-width: 768px) {
-  #automotive {
+  #homeimprovement {
       width: 85%;
   }
 }

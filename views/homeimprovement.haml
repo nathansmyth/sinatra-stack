@@ -7,8 +7,9 @@
       %div.content
         %div#categories
           %ul#category-list
-          - @listing.each do |item|
-            %li=item.to_a[0].to_a[1]
+            - @listing.each do |item|
+              %li
+                %a{:href => "/homeimprovement/#{item.to_a[0].to_a[1].gsub(' ', '%20')}"}=item.to_a[0].to_a[1]
         %div#category-stats
 
 / Templates
