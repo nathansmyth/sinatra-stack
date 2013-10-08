@@ -1,0 +1,2 @@
+20131007 - ns used this command to import hi category json obtained over the summer.
+mongoimport --db reply --collection homeimprovement --file public/js/json/home_improvement.json --journal --jsonArray

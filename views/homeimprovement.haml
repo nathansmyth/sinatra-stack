@@ -1,0 +1,30 @@
+/ Make App Interface
+
+%div#homeimprovement
+  %div.title
+    %h1
+      H.I. with Monnie Bennett
+      %div.content
+        %div#categories
+          %ul#category-list
+          - @listing.each do |item|
+            %li=item.to_a[0].to_a[1]
+        %div#category-stats
+
+/ Templates
+
+/ Can't figure out how to tell HAML not to escape the raw HTML lines
+%script#item-template{"type" => "text/template"}
+  <div class="category">
+  %div.display
+    %div.category-text 
+    %span#category-destroy
+  %div.edit
+    %input.category-input{"type" => "text", "value" =>""}/
+  </div>
+
+%script#stats-template{"type" => "text/template"}
+  <% if (total) { %>
+  %span.category-count
+    %span.number <%= total %>
+  <% } %>

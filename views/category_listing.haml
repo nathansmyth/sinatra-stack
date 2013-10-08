@@ -1,0 +1,12 @@
+/ Make App Interface
+
+%div#homeimprovement
+  %div.title
+    %h1
+      = @category
+      %div.content
+        %div#category
+          %ul#category-list
+          - @listing.to_a[0].to_a[1].each do |item|
+            %li=item.to_a[0][1]
+        %div#category-stats
