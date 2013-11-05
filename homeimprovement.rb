@@ -2,12 +2,21 @@ require 'rubygems'
 require 'sinatra'
 require 'mongo'
 require 'json'
+require 'haml'
+require 'mongo_mapper'
+require 'mustache/sinatra'
 
 DB = Mongo::Connection.new.db("reply", :pool_size => 5, :timeout => 5)
 HI = DB["homeimprovement"]
 
+
+
 get '/' do
   haml :index, :attr_wrapper => '"', :locals => {:title => 'haii'}
+end
+
+get '/himap' do
+  "hello world"
 end
 
 get '/homeimprovement' do
