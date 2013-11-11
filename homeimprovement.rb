@@ -3,13 +3,11 @@ require 'sinatra'
 require 'mongo'
 require 'json'
 require 'haml'
-require 'mongo_mapper'
+require 'rom'
 require 'mustache/sinatra'
 
 DB = Mongo::Connection.new.db("reply", :pool_size => 5, :timeout => 5)
 HI = DB["homeimprovement"]
-
-
 
 get '/' do
   haml :index, :attr_wrapper => '"', :locals => {:title => 'haii'}
@@ -28,6 +26,7 @@ get '/homeimprovement/:category' do
   @category = params[:category]
   @listing = HI.find({"CategoryName" => @category}, {:fields => {"_id" => 0, "SubCategories.SubCategoryName" => 1}}).next
   haml :category_listing, :attr_wrapper => '"', :locals => {:title => "category_listing mongo page"}
+  #if @category === 'painting' do haml :paint_calculator, :attr_wrapper => '"'
 end
 
 get '/api/:thing' do
