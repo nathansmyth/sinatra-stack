@@ -1,0 +1,65 @@
+%script{"src" => "/assets/js/vendor/underscore-min.js"}
+%script{"src" => "/assets/js/vendor/backbone-min.js"}
+%script{"src" => "/assets/js/vendor/json2.js"}
+%script{"src" => "/assets/js/paint_calculator.js"}
+%style
+  form#calculator fieldset {
+    border: thin solid red;
+    width: 45%;
+  }
+  form#calculator fieldset.fields {
+    float: left;
+  }
+  form#calculator fieldset.results {
+    clear: none;
+    float: right;
+    position: relative;
+    top: -165px;
+  }
+%form#calculator
+%fieldset.fields
+%table#calc-table{"cellspacing" => "0", "cellpadding" => "5", "border" => "0", "width" => "100%"}
+  %tbody
+  %tr
+    %td.title
+      %label{"for" => "length"}
+        Length
+    %td.value
+      %input.number.length{"type" => "text", "name" => "length", "size" => "5", "maxlength" => "5"}
+      %span#length-unit-measure.unit-measure
+        feet
+  %tr
+    %td.title
+      %label{"for" => "height"}
+        Height
+    %td.value
+      %input.number.height{"type" => "text", "name" => "height", "size" => "5", "maxlength" => "5"}
+      %span#height-unit-measure.unit-measure
+        feet
+  %tr
+    %td.title
+      %label{"for" => "doors"}
+        Number of DOORS%br/ in room
+    %td.value
+      %input.number.doors{"type" => "text", "name" => "doors", "size" => "5", "maxlength" => "5"}
+  %tr
+    %td.title
+      %label{"for" => "windows"}
+        Number of WINDOWS<br> in room</label></td>
+    %td.value
+      %input.number.windows{"type" => "text", "name" => "windows", "size" => "5", "maxlength" => "5"}
+  %tr
+    %td.title
+      %label{"for" => "zipcode"}
+        Your Zipcode
+    %td.value
+      %input.number.zipcode{"type" => "text", "name" => "zipcode", "size" => "5", "maxlength" => "5"}
+  %tr
+    %td.title{"style" => "border-bottom: none;"}
+      &nbsp;
+    %td{"style" => "border-bottom: none;"}
+      %input#calculate.button{"type" => "button", "value" => "CALCULATE"}
+
+%fieldset.results
+  %p
+    results
